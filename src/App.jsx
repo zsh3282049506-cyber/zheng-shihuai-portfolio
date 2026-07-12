@@ -348,19 +348,14 @@ function App() {
       <main>
         <section className="hero" id="top">
           <div className="hero-opening-mask" aria-hidden="true" />
-          <video
+          <DeferredVideo
             className="hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
+            src={assetUrl('hero-machinery.mp4')}
+            label="首屏机械运行演示"
             poster={assetUrl('project-automation.jpg')}
-            aria-hidden="true"
-            onCanPlay={(event) => event.currentTarget.play().catch(() => {})}
-          >
-            <source src={assetUrl('hero-machinery.mp4')} type="video/mp4" />
-          </video>
+            ariaHidden
+            eager
+          />
           <div className="hero-shade" />
           <div className="hero-grid" aria-hidden="true" />
           <span className="coordinate coordinate-a">X 23.41 / Y 07.18</span>
@@ -411,7 +406,6 @@ function App() {
               mouseStrength={1}
               mouseRadius={0.55}
               mouseDampening={0.18}
-              mixBlendMode="screen"
               dpr={1}
             />
           </div>
@@ -599,7 +593,7 @@ function App() {
                         <div className="project-media-group-grid">
                           {project.media.videos.map((item, index) => (
                             <figure className={`project-gallery-item project-gallery-item--video ${item.className}`} key={item.src}>
-                              <DeferredVideo className={index === 0 ? 'project-feature-media' : ''} src={item.src} label={item.label} />
+                              <DeferredVideo className={index === 0 ? 'project-feature-media' : ''} src={item.src} poster={item.poster ?? assetUrl('project-gears.jpg')} label={item.label} />
                               <figcaption>{item.label}</figcaption>
                             </figure>
                           ))}
@@ -609,7 +603,7 @@ function App() {
                   ) : (
                     <div className="project-media">
                       <div className="project-media-feature">
-                        <DeferredVideo className="project-feature-media" src={project.media.src} label={project.media.label} />
+                        <DeferredVideo className="project-feature-media" src={project.media.src} poster={assetUrl('project-automation.jpg')} label={project.media.label} />
                         <div className="project-media-overlay" />
                         <span className="project-media-label">循环视频 / {project.media.label}</span>
                         <span className="project-index">{project.index}</span>
@@ -618,9 +612,7 @@ function App() {
                         {project.media.gallery.map((item) => (
                           <figure className={`project-gallery-item project-gallery-item--${item.type}`} key={item.src}>
                             {item.type === 'video' ? (
-                              <video autoPlay muted loop playsInline preload="metadata" aria-label={item.label}>
-                                <source src={item.src} type="video/mp4" />
-                              </video>
+                              <DeferredVideo src={item.src} poster={assetUrl('project-automation.jpg')} label={item.label} />
                             ) : (
                               <img src={item.src} alt={`${project.title}${item.label}`} loading="lazy" decoding="async" />
                             )}
@@ -682,9 +674,13 @@ function App() {
         </div>
 
         <section className="contact-section" id="contact" data-motion-section>
-          <video className="contact-video" autoPlay muted loop playsInline preload="metadata" aria-hidden="true">
-            <source src={assetUrl('hero-machinery.mp4')} type="video/mp4" />
-          </video>
+          <DeferredVideo
+            className="contact-video"
+            src={assetUrl('hero-machinery.mp4')}
+            label="联系页机械运行演示"
+            poster={assetUrl('project-automation.jpg')}
+            ariaHidden
+          />
           <div className="contact-video-shade" aria-hidden="true" />
           <div className="contact-grid" aria-hidden="true" />
           <div className="contact-inner content-frame">

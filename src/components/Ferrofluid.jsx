@@ -174,6 +174,7 @@ void main() {
 function Ferrofluid({
   className = '',
   dpr,
+  frameRate = 30,
   paused = false,
   colors = ['#ffffff', '#ffffff', '#ffffff'],
   backgroundColor = '#03010A',
@@ -202,7 +203,7 @@ function Ferrofluid({
     const renderer = new Renderer({
       dpr: dpr ?? Math.min(window.devicePixelRatio || 1, 1.5),
       alpha: true,
-      antialias: true,
+      antialias: false,
     })
     const gl = renderer.gl
     const canvas = gl.canvas
@@ -246,6 +247,7 @@ function Ferrofluid({
     const mesh = new Mesh(gl, { geometry, program })
     let animationFrame = 0
     let lastTime = 0
+    let lastRenderTime = 0
     let visible = false
     let pageVisible = !document.hidden
     const mouseTarget = [0, 0]
@@ -272,22 +274,27 @@ function Ferrofluid({
         animationFrame = 0
         return
       }
-      uniforms.iTime.value = time * 0.001
-      if (mouseDampening > 0) {
-        if (!lastTime) lastTime = time
-        const delta = (time - lastTime) / 1000
-        lastTime = time
-        const factor = Math.min(1, 1 - Math.exp(-delta / Math.max(0.0001, mouseDampening)))
-        uniforms.iMouse.value[0] += (mouseTarget[0] - uniforms.iMouse.value[0]) * factor
-        uniforms.iMouse.value[1] += (mouseTarget[1] - uniforms.iMouse.value[1]) * factor
+      const frameInterval = 1000 / Math.max(frameRate, 1)
+      if (time - lastRenderTime >= frameInterval) {
+        uniforms.iTime.value = time * 0.001
+        if (mouseDampening > 0) {
+          if (!lastTime) lastTime = time
+          const delta = (time - lastTime) / 1000
+          lastTime = time
+          const factor = Math.min(1, 1 - Math.exp(-delta / Math.max(0.0001, mouseDampening)))
+          uniforms.iMouse.value[0] += (mouseTarget[0] - uniforms.iMouse.value[0]) * factor
+          uniforms.iMouse.value[1] += (mouseTarget[1] - uniforms.iMouse.value[1]) * factor
+        }
+        render()
+        lastRenderTime = time
       }
-      render()
       animationFrame = window.requestAnimationFrame(loop)
     }
 
     const start = () => {
       if (!animationFrame && canRender()) {
         lastTime = 0
+        lastRenderTime = 0
         animationFrame = window.requestAnimationFrame(loop)
       }
     }
@@ -331,6 +338,7 @@ function Ferrofluid({
   }, [
     colors,
     dpr,
+    frameRate,
     flowDirection,
     fluidity,
     glow,
