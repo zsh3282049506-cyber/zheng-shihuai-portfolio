@@ -174,7 +174,8 @@ void main() {
 function Ferrofluid({
   className = '',
   dpr,
-  frameRate = 30,
+  frameRate = 24,
+  renderScale = 0.72,
   paused = false,
   colors = ['#ffffff', '#ffffff', '#ffffff'],
   backgroundColor = '#03010A',
@@ -256,16 +257,19 @@ function Ferrofluid({
     const canRender = () => visible && pageVisible && !paused
     const resize = () => {
       const rect = container.getBoundingClientRect()
-      renderer.setSize(Math.max(rect.width, 1), Math.max(rect.height, 1))
+      const scaledWidth = Math.max(Math.round(rect.width * renderScale), 1)
+      const scaledHeight = Math.max(Math.round(rect.height * renderScale), 1)
+      renderer.setSize(scaledWidth, scaledHeight)
       uniforms.iResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight, 1]
       render()
     }
 
     const onPointerMove = (event) => {
       const rect = canvas.getBoundingClientRect()
-      const scaleFactor = renderer.dpr || 1
-      mouseTarget[0] = (event.clientX - rect.left) * scaleFactor
-      mouseTarget[1] = (rect.height - (event.clientY - rect.top)) * scaleFactor
+      const scaleX = gl.drawingBufferWidth / Math.max(rect.width, 1)
+      const scaleY = gl.drawingBufferHeight / Math.max(rect.height, 1)
+      mouseTarget[0] = (event.clientX - rect.left) * scaleX
+      mouseTarget[1] = (rect.height - (event.clientY - rect.top)) * scaleY
       if (mouseDampening <= 0) uniforms.iMouse.value = [...mouseTarget]
     }
 
@@ -349,6 +353,7 @@ function Ferrofluid({
     opacity,
     paused,
     rimWidth,
+    renderScale,
     scale,
     sharpness,
     shimmer,
