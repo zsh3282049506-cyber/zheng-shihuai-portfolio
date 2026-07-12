@@ -23,7 +23,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 const ferrofluidColors = ['#000000', '#ffffff', '#ffffff']
 const experienceGlowColors = ['#d9ff43', '#f2f3ef', '#6f777a']
-const assetUrl = (fileName) => `${import.meta.env.BASE_URL}assets/${fileName}`
+const assetVersion = '20260712-2'
+const assetUrl = (fileName) => `${import.meta.env.BASE_URL}assets/${fileName}?v=${assetVersion}`
 const navigationItems = [
   { label: '关于', href: '#profile' },
   { label: '项目', href: '#projects' },
