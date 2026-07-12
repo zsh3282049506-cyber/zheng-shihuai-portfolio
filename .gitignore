@@ -1,0 +1,12 @@
+node_modules
+dist
+.vite
+*.log
+
+# 本地原始素材与检查输出不属于 Vite 发布源码。
+/PPU机械手/
+/齿轮齿条/
+/output/
+/.playwright-cli/
+/广东海洋大学-27届-郑世怀.pdf
+/github-pages-deploy/
