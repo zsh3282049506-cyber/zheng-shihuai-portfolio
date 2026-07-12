@@ -7,7 +7,6 @@ function DeferredVideo({ className = '', src, label, poster, eager = false, aria
   const visibleRef = useRef(false)
   const [loaded, setLoaded] = useState(eager)
   const [requiresInteraction, setRequiresInteraction] = useState(false)
-  const [isWeChat, setIsWeChat] = useState(false)
 
   const playVideo = () => {
     const video = videoRef.current
@@ -29,7 +28,6 @@ function DeferredVideo({ className = '', src, label, poster, eager = false, aria
     const video = videoRef.current
     if (!video) return undefined
 
-    setIsWeChat(/MicroMessenger/i.test(navigator.userAgent))
     video.setAttribute('webkit-playsinline', 'true')
     video.setAttribute('x5-playsinline', 'true')
 
@@ -63,7 +61,7 @@ function DeferredVideo({ className = '', src, label, poster, eager = false, aria
       poster={poster}
       aria-label={label}
       aria-hidden={ariaHidden || undefined}
-      controls={requiresInteraction || isWeChat}
+      controls={requiresInteraction}
       onClick={playVideo}
       onCanPlay={(event) => {
         if (visibleRef.current) playVideo()

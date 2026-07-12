@@ -407,8 +407,6 @@ function App() {
               mouseRadius={0.55}
               mouseDampening={0.18}
               dpr={1}
-              frameRate={24}
-              renderScale={0.72}
             />
           </div>
 
