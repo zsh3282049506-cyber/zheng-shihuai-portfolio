@@ -40,8 +40,9 @@ const projects = [
     subtitle: '非标高速搬运机构 / 独立主导',
     period: '2026.03 — 2026.05',
     media: {
-      src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912935738062&bvid=BV1yQN26QEFf&cid=39917325495&p=1&autoplay=0',
+      src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912935738062&bvid=BV1yQN26QEFf&cid=39917325495&p=1&autoplay=1&muted=1&loop=1&danmaku=0',
       label: 'PPU 机械手运行演示',
+      duration: 16,
       gallery: [
         { type: 'image', src: cdnAssetUrl('ppu-assembly-front.png'), label: '正视结构模型' },
         { type: 'image', src: cdnAssetUrl('ppu-assembly-rear.png'), label: '侧后结构模型' },
@@ -59,17 +60,19 @@ const projects = [
     media: {
       layout: 'grouped',
       images: [
-        { src: cdnAssetUrl('rack-platform.png'), label: '传动平台模型' },
-        { src: cdnAssetUrl('rack-gear-profile.png'), label: '齿廓与齿条模型' },
+        { src: cdnAssetUrl('rack-platform.webp'), label: '传动平台模型', loading: 'eager' },
+        { src: cdnAssetUrl('rack-gear-profile.webp'), label: '齿廓与齿条模型', loading: 'eager' },
       ],
       videos: [
         {
-          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952449542&bvid=BV1sDN26pEEu&cid=39917389003&p=1&autoplay=0',
+          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952449542&bvid=BV1sDN26pEEu&cid=39917389003&p=1&autoplay=1&muted=1&loop=1&danmaku=0',
           label: '齿轮齿条爆炸视图',
+          duration: 8,
         },
         {
-          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952514609&bvid=BV1yDN26pEBb&cid=39917390311&p=1&autoplay=0',
+          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952514609&bvid=BV1yDN26pEBb&cid=39917390311&p=1&autoplay=1&muted=1&loop=1&danmaku=0',
           label: '纯滚动运行演示',
+          duration: 14,
         },
       ],
     },
@@ -589,7 +592,14 @@ function App() {
                         <div className="project-media-group-grid">
                           {project.media.images.map((item, index) => (
                             <figure className="project-gallery-item" key={item.src}>
-                              <img className={index === 0 ? 'project-parallax-media' : ''} src={item.src} alt={`${project.title}${item.label}`} loading="lazy" decoding="async" />
+                              <img
+                                className={index === 0 ? 'project-parallax-media' : ''}
+                                src={item.src}
+                                alt={`${project.title}${item.label}`}
+                                loading={item.loading ?? 'lazy'}
+                                fetchPriority={item.loading === 'eager' ? 'low' : undefined}
+                                decoding="async"
+                              />
                               <figcaption>{item.label}</figcaption>
                             </figure>
                           ))}
@@ -603,7 +613,7 @@ function App() {
                         <div className="project-media-group-grid">
                           {project.media.videos.map((item) => (
                             <figure className="project-gallery-item project-gallery-item--video" key={item.src}>
-                              <BilibiliPlayer src={item.src} title={item.label} />
+                              <BilibiliPlayer src={item.src} title={item.label} duration={item.duration} />
                               <figcaption>{item.label}</figcaption>
                             </figure>
                           ))}
@@ -613,13 +623,13 @@ function App() {
                   ) : (
                     <div className="project-media">
                       <div className="project-media-feature">
-                        <BilibiliPlayer src={project.media.src} title={project.media.label} />
+                        <BilibiliPlayer src={project.media.src} title={project.media.label} duration={project.media.duration} />
                       </div>
                       <div className="project-gallery">
                         {project.media.gallery.map((item, index) => (
                           <figure className={`project-gallery-item project-gallery-item--${item.type}`} key={item.src}>
                             {item.type === 'video' ? (
-                              <BilibiliPlayer src={item.src} title={item.label} />
+                              <BilibiliPlayer src={item.src} title={item.label} duration={item.duration} />
                             ) : (
                               <img className={index === 0 ? 'project-parallax-media' : ''} src={item.src} alt={`${project.title}${item.label}`} loading="lazy" decoding="async" />
                             )}
