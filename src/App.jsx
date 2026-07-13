@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import Ferrofluid from './components/Ferrofluid'
 import BorderGlow from './components/BorderGlow'
+import BilibiliPlayer from './components/BilibiliPlayer'
 import DeferredVideo from './components/DeferredVideo'
 import PillNav from './components/PillNav'
 
@@ -24,6 +25,7 @@ gsap.registerPlugin(ScrollTrigger)
 const ferrofluidColors = ['#000000', '#ffffff', '#ffffff']
 const experienceGlowColors = ['#d9ff43', '#f2f3ef', '#6f777a']
 const assetUrl = (fileName) => `${import.meta.env.BASE_URL}assets/${fileName}`
+const cdnAssetUrl = (fileName) => `https://cdn.jsdelivr.net/gh/zsh3282049506-cyber/zheng-shihuai-portfolio/public/assets/${fileName}`
 const navigationItems = [
   { label: '关于', href: '#profile' },
   { label: '项目', href: '#projects' },
@@ -38,11 +40,11 @@ const projects = [
     subtitle: '非标高速搬运机构 / 独立主导',
     period: '2026.03 — 2026.05',
     media: {
-      src: assetUrl('ppu-motion.mp4'),
+      src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912935738062&bvid=BV1yQN26QEFf&cid=39917325495&p=1&autoplay=0',
       label: 'PPU 机械手运行演示',
       gallery: [
-        { type: 'image', src: assetUrl('ppu-assembly-front.png'), label: '正视结构模型' },
-        { type: 'image', src: assetUrl('ppu-assembly-rear.png'), label: '侧后结构模型' },
+        { type: 'image', src: cdnAssetUrl('ppu-assembly-front.png'), label: '正视结构模型' },
+        { type: 'image', src: cdnAssetUrl('ppu-assembly-rear.png'), label: '侧后结构模型' },
       ],
     },
     summary:
@@ -57,12 +59,18 @@ const projects = [
     media: {
       layout: 'grouped',
       images: [
-        { src: assetUrl('rack-platform.png'), label: '传动平台模型' },
-        { src: assetUrl('rack-gear-profile.png'), label: '齿廓与齿条模型' },
+        { src: cdnAssetUrl('rack-platform.png'), label: '传动平台模型' },
+        { src: cdnAssetUrl('rack-gear-profile.png'), label: '齿廓与齿条模型' },
       ],
       videos: [
-        { src: assetUrl('rack-exploded.mp4'), label: '齿轮齿条爆炸视图', className: 'project-gallery-item--exploded' },
-        { src: assetUrl('rack-motion.mp4'), label: '纯滚动运行演示', className: 'project-gallery-item--running' },
+        {
+          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952449542&bvid=BV1sDN26pEEu&cid=39917389003&p=1&autoplay=0',
+          label: '齿轮齿条爆炸视图',
+        },
+        {
+          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952514609&bvid=BV1yDN26pEBb&cid=39917390311&p=1&autoplay=0',
+          label: '纯滚动运行演示',
+        },
       ],
     },
     summary:
@@ -268,7 +276,7 @@ function App() {
       if (projectsSection) {
         gsap.utils.toArray(projectsSection.querySelectorAll('[data-project-card]')).forEach((card) => {
           const media = card.querySelector('.project-media')
-          const featureMedia = card.querySelector('.project-feature-media')
+          const featureMedia = card.querySelector('.project-parallax-media')
           const content = card.querySelector('.project-content')
           const timeline = gsap.timeline({
             scrollTrigger: { trigger: card, start: 'top 78%', once: true },
@@ -278,20 +286,22 @@ function App() {
           timeline
             .from(card, { autoAlpha: 0, y: 130, scale: 0.95, duration: 1.35 })
             .fromTo(media, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 1.35 }, '-=0.88')
-            .fromTo(featureMedia, { scale: 1.22 }, { scale: 1.08, duration: 1.7 }, '<')
             .from(content.children, { autoAlpha: 0, y: 48, duration: 0.9, stagger: 0.12 }, '-=0.82')
 
-          gsap.fromTo(featureMedia, { yPercent: -7, scale: 1.1 }, {
-            yPercent: 7,
-            scale: 1.1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.9,
-            },
-          })
+          if (featureMedia) {
+            timeline.fromTo(featureMedia, { scale: 1.08 }, { scale: 1.03, duration: 1.7 }, '-=1.6')
+            gsap.fromTo(featureMedia, { yPercent: -3, scale: 1.03 }, {
+              yPercent: 3,
+              scale: 1.03,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 0.9,
+              },
+            })
+          }
         })
       }
 
@@ -352,7 +362,7 @@ function App() {
             className="hero-video"
             src={assetUrl('hero-machinery.mp4')}
             label="首屏机械运行演示"
-            poster={assetUrl('project-automation.jpg')}
+            poster={cdnAssetUrl('project-automation.jpg')}
             ariaHidden
             eager
           />
@@ -423,7 +433,7 @@ function App() {
             <div className="profile-layout">
               <figure className="portrait-block" data-profile-item>
                 <div className="portrait-frame">
-                  <img src={assetUrl('portrait.jpg')} alt="机械设计工程师郑世怀" loading="lazy" decoding="async" />
+                  <img src={cdnAssetUrl('portrait.jpg')} alt="机械设计工程师郑世怀" loading="lazy" decoding="async" />
                   <span className="portrait-corner corner-tl" />
                   <span className="portrait-corner corner-br" />
                 </div>
@@ -577,9 +587,9 @@ function App() {
                           <strong>{project.index}</strong>
                         </div>
                         <div className="project-media-group-grid">
-                          {project.media.images.map((item) => (
+                          {project.media.images.map((item, index) => (
                             <figure className="project-gallery-item" key={item.src}>
-                              <img src={item.src} alt={`${project.title}${item.label}`} loading="lazy" decoding="async" />
+                              <img className={index === 0 ? 'project-parallax-media' : ''} src={item.src} alt={`${project.title}${item.label}`} loading="lazy" decoding="async" />
                               <figcaption>{item.label}</figcaption>
                             </figure>
                           ))}
@@ -587,13 +597,13 @@ function App() {
                       </section>
                       <section className="project-media-group project-media-group--videos">
                         <div className="project-media-group-heading">
-                          <span>循环演示</span>
-                          <strong>LOOP</strong>
+                          <span>项目视频</span>
+                          <strong>BILIBILI</strong>
                         </div>
                         <div className="project-media-group-grid">
-                          {project.media.videos.map((item, index) => (
-                            <figure className={`project-gallery-item project-gallery-item--video ${item.className}`} key={item.src}>
-                              <DeferredVideo className={index === 0 ? 'project-feature-media' : ''} src={item.src} poster={item.poster ?? assetUrl('project-gears.jpg')} label={item.label} />
+                          {project.media.videos.map((item) => (
+                            <figure className="project-gallery-item project-gallery-item--video" key={item.src}>
+                              <BilibiliPlayer src={item.src} title={item.label} />
                               <figcaption>{item.label}</figcaption>
                             </figure>
                           ))}
@@ -603,18 +613,15 @@ function App() {
                   ) : (
                     <div className="project-media">
                       <div className="project-media-feature">
-                        <DeferredVideo className="project-feature-media" src={project.media.src} poster={assetUrl('project-automation.jpg')} label={project.media.label} />
-                        <div className="project-media-overlay" />
-                        <span className="project-media-label">循环视频 / {project.media.label}</span>
-                        <span className="project-index">{project.index}</span>
+                        <BilibiliPlayer src={project.media.src} title={project.media.label} />
                       </div>
                       <div className="project-gallery">
-                        {project.media.gallery.map((item) => (
+                        {project.media.gallery.map((item, index) => (
                           <figure className={`project-gallery-item project-gallery-item--${item.type}`} key={item.src}>
                             {item.type === 'video' ? (
-                              <DeferredVideo src={item.src} poster={assetUrl('project-automation.jpg')} label={item.label} />
+                              <BilibiliPlayer src={item.src} title={item.label} />
                             ) : (
-                              <img src={item.src} alt={`${project.title}${item.label}`} loading="lazy" decoding="async" />
+                              <img className={index === 0 ? 'project-parallax-media' : ''} src={item.src} alt={`${project.title}${item.label}`} loading="lazy" decoding="async" />
                             )}
                             <figcaption>{item.label}</figcaption>
                           </figure>
@@ -678,7 +685,7 @@ function App() {
             className="contact-video"
             src={assetUrl('hero-machinery.mp4')}
             label="联系页机械运行演示"
-            poster={assetUrl('project-automation.jpg')}
+            poster={cdnAssetUrl('project-automation.jpg')}
             ariaHidden
           />
           <div className="contact-video-shade" aria-hidden="true" />
