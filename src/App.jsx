@@ -436,7 +436,7 @@ function App() {
             <div className="profile-layout">
               <figure className="portrait-block" data-profile-item>
                 <div className="portrait-frame">
-                  <img src={cdnAssetUrl('portrait.jpg')} alt="机械设计工程师郑世怀" loading="lazy" decoding="async" />
+                  <img src={assetUrl('portrait-clear.jpg')} alt="机械设计工程师郑世怀" loading="lazy" decoding="async" />
                   <span className="portrait-corner corner-tl" />
                   <span className="portrait-corner corner-br" />
                 </div>
