@@ -40,7 +40,7 @@ const projects = [
     subtitle: '非标高速搬运机构 / 独立主导',
     period: '2026.03 — 2026.05',
     media: {
-      src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912935738062&bvid=BV1yQN26QEFf&cid=39917325495&p=1&autoplay=1&muted=1&loop=1&danmaku=0',
+      src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912935738062&bvid=BV1yQN26QEFf&cid=39917325495&p=1&autoplay=1&muted=1&loop=1&danmaku=0&high_quality=1&quality=80&qn=80',
       label: 'PPU 机械手运行演示',
       duration: 16,
       gallery: [
@@ -65,12 +65,12 @@ const projects = [
       ],
       videos: [
         {
-          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952449542&bvid=BV1sDN26pEEu&cid=39917389003&p=1&autoplay=1&muted=1&loop=1&danmaku=0',
+          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952449542&bvid=BV1sDN26pEEu&cid=39917389003&p=1&autoplay=1&muted=1&loop=1&danmaku=0&high_quality=1&quality=80&qn=80',
           label: '齿轮齿条爆炸视图',
           duration: 8,
         },
         {
-          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952514609&bvid=BV1yDN26pEBb&cid=39917390311&p=1&autoplay=1&muted=1&loop=1&danmaku=0',
+          src: 'https://player.bilibili.com/player.html?isOutside=true&aid=116912952514609&bvid=BV1yDN26pEBb&cid=39917390311&p=1&autoplay=1&muted=1&loop=1&danmaku=0&high_quality=1&quality=80&qn=80',
           label: '纯滚动运行演示',
           duration: 14,
         },
